@@ -18,6 +18,7 @@ class Plugin(ABC):
         strategy      用什么策略（变量 + 过滤器 + 打包方式）
     可选覆盖：
         description      描述
+        output_subdir    输出子目录（默认 = name）
         build_combinations  自己构造组合（默认走 strategy）
         post_processor   后处理
     """
@@ -38,6 +39,10 @@ class Plugin(ABC):
     @abstractmethod
     def strategy(self) -> Strategy:
         ...
+
+    def output_subdir(self) -> str:
+        """输出子目录名（相对于 base_output_dir）。默认用插件名。"""
+        return self.name
 
     def build_combinations(self, pool: Dict[str, Variable]) -> List[Combination]:
         """默认实现：从策略里读变量 + 过滤器，做笛卡尔积。"""

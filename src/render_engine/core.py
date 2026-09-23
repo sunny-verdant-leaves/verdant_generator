@@ -12,6 +12,24 @@ Packer = Callable[[str, List[Tuple[Combination, str]]], List["OutputFile"]]
 Filter = Callable[[Combination], bool]
 
 
+# Windows 文件名非法字符：< > : " | ? *
+# 同时排除控制字符
+_ILLEGAL_CHARS = re.compile(r'[<>:"|?*\x00-\x1f]')
+
+
+def safe_filename(name: str) -> str:
+    """把渲染后的文件名变成合法文件名。
+
+    - 替换 Windows 保留字符为下划线
+    - 保留 / （表示子目录）
+    - 去掉每段末尾的空格和点（Windows 不允许）
+    """
+    result = _ILLEGAL_CHARS.sub("_", name)
+    parts = result.split("/")
+    parts = [p.rstrip(" .") for p in parts]
+    return "/".join(parts)
+
+
 @dataclass(frozen=True)
 class Variable:
     name: str
@@ -82,23 +100,26 @@ def render(text: str, combo: Combination, strict: bool = False) -> str:
 
 # ---------- 输出策略 ----------
 def pack_per_combination(template_name, results):
-    """每个组合一个文件。"""
-    return [OutputFile(render(template_name, c), t) for c, t in results]
+    """每个组合一个文件。文件名会经过 safe_filename 处理。"""
+    return [
+        OutputFile(safe_filename(render(template_name, c)), t)
+        for c, t in results
+    ]
 
 
 def pack_merged(filename, results, joiner="\n"):
     """所有组合合并成一个文件。"""
-    return [OutputFile(filename, joiner.join(t for _, t in results))]
+    return [OutputFile(safe_filename(filename), joiner.join(t for _, t in results))]
 
 
 def pack_grouped(group_by, name_template, results, joiner="\n"):
-    """按某个变量分组，每组一个文件。"""
+    """按某个变量分组，每组一个文件。文件名会经过 safe_filename 处理。"""
     groups: Dict[str, Tuple[Combination, List[str]]] = {}
     for combo, text in results:
         key = combo.get(group_by, "_default")
         groups.setdefault(key, (combo, []))[1].append(text)
     return [
-        OutputFile(render(name_template, combo), joiner.join(texts))
+        OutputFile(safe_filename(render(name_template, combo)), joiner.join(texts))
         for combo, texts in groups.values()
     ]
 
