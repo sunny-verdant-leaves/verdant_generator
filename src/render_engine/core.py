@@ -1,13 +1,15 @@
 """核心引擎：数据 + 组合 + 渲染 + 输出 + 管线。"""
 import itertools
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, Tuple
+
 
 Combination = Dict[str, str]
 PostProcessor = Callable[[str, Combination], str]
 Packer = Callable[[str, List[Tuple[Combination, str]]], List["OutputFile"]]
+Filter = Callable[[Combination], bool]
 
 
 @dataclass(frozen=True)
@@ -35,18 +37,27 @@ class OutputFile:
 
 @dataclass
 class Strategy:
-    """一个生成策略：用哪些变量 + 怎么打包输出。"""
+    """一个生成策略：用哪些变量 + 怎么组合 + 怎么输出。"""
     variables: List[str]
     packer: Packer
+    filters: List[Filter] = field(default_factory=list)
 
 
 # ---------- 组合 ----------
-def cartesian(variables: List[Variable]) -> List[Combination]:
+def cartesian(
+    variables: List[Variable],
+    filters: Optional[List[Filter]] = None,
+) -> List[Combination]:
     if not variables:
-        return [{}]
-    names = [v.name for v in variables]
-    value_lists = [v.values for v in variables]
-    return [dict(zip(names, vs)) for vs in itertools.product(*value_lists)]
+        combos: List[Combination] = [{}]
+    else:
+        names = [v.name for v in variables]
+        value_lists = [v.values for v in variables]
+        combos = [dict(zip(names, vs)) for vs in itertools.product(*value_lists)]
+
+    if filters:
+        combos = [c for c in combos if all(f(c) for f in filters)]
+    return combos
 
 
 # ---------- 渲染 ----------
@@ -101,7 +112,7 @@ def run(
 ) -> List[OutputFile]:
     """一任务一模板：模板 + 变量池 + 策略 → 一批 OutputFile。"""
     variables = [pool[n] for n in strategy.variables]
-    combos = cartesian(variables)
+    combos = cartesian(variables, strategy.filters)
 
     results = []
     for combo in combos:
