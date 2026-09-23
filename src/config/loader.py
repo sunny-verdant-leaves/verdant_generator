@@ -1,17 +1,4 @@
-"""配置加载：JSON → Plugin 实例。
-
-配置结构：
-    {
-        "plugins": [
-            {"type": "recipe_generator", ...},
-            {"type": "localizer", ...}
-        ]
-    }
-
-已砍掉：
-    - 顶层 variables / strategies（每个插件自带数据）
-    - PACKERS 注册表（packer 是插件的默认行为）
-"""
+"""配置加载：JSON → Plugin 实例。"""
 import json
 from pathlib import Path
 from typing import List
@@ -24,6 +11,8 @@ def _make_recipe_generator(data: dict) -> RecipeGeneratorPlugin:
     return RecipeGeneratorPlugin(
         template_path=data["template"],
         trees=data["trees"],
+        output_name_template=data.get("output_name"),
+        default_namespace=data.get("default_namespace", "minecraft"),
     )
 
 
@@ -31,6 +20,8 @@ def _make_localizer(data: dict) -> LocalizerPlugin:
     return LocalizerPlugin(
         template_path=data["template"],
         materials=data["materials"],
+        output_name_template=data.get("output_name"),
+        default_namespace=data.get("default_namespace", "minecraft"),
         replacements=data.get("replacements"),
         per_material_replacements=data.get("per_material_replacements"),
     )
@@ -54,11 +45,6 @@ def load_plugins(data: list) -> List[Plugin]:
 
 
 def load_config(path: str) -> dict:
-    """从文件加载配置。
-
-    返回:
-        {"plugins": List[Plugin]}
-    """
     p = Path(path)
     raw = json.loads(p.read_text(encoding="utf-8"))
     return {"plugins": load_plugins(raw.get("plugins", []))}

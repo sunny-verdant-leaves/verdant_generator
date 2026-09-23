@@ -1,16 +1,12 @@
 """本地化生成插件。
 
-配置示例：
-    {
-        "type": "localizer",
-        "template": "templates/{material_id}.json",
-        "materials": {"oak": "橡木", "crimson": "绯红"},
-        "replacements": {"原木": "木"},
-        "per_material_replacements": {
-            "crimson": {"_log": "_stem"}
-        }
-    }
+支持两种 materials 输入：
+    - 完整 ID: {"minecraft:oak": "橡木", "biomesoplenty:fir": "冷杉"}
+      → 自动派生 material_id（短名）、modid、modid_safe
+    - 短名:   {"oak": "橡木"}
+      → 用 default_namespace 补 modid
 """
+from pathlib import Path
 from typing import Dict, Optional
 
 from src.render_engine import (
@@ -20,18 +16,20 @@ from src.render_engine import (
 
 
 class LocalizerPlugin(Plugin):
-    """一对一材质对，每个材质一个组合。"""
-
     def __init__(
         self,
         template_path: str,
         materials: Dict[str, str],
+        output_name_template: Optional[str] = None,
+        default_namespace: str = "minecraft",
         replacements: Optional[Dict[str, str]] = None,
         per_material_replacements: Optional[Dict[str, Dict[str, str]]] = None,
         packer: Optional[Packer] = None,
     ):
         self._template_path = template_path
         self._materials = materials
+        self._output_name_template = output_name_template
+        self._default_ns = default_namespace
         self._replacements = replacements or {}
         self._per_material = per_material_replacements or {}
         self._packer = packer
@@ -47,11 +45,36 @@ class LocalizerPlugin(Plugin):
     def template_path(self) -> str:
         return self._template_path
 
+    def output_name_template(self) -> str:
+        if self._output_name_template:
+            return self._output_name_template
+        return Path(self._template_path).name
+
     def replacements(self):
-        return [
-            {"material_id": mid, "material_zh_cn": zh}
-            for mid, zh in self._materials.items()
-        ]
+        return [self._make_combo(full_id, zh)
+                for full_id, zh in self._materials.items()]
+
+    def _make_combo(self, full_id: str, zh: str) -> Combination:
+        if ":" in full_id:
+            ns, short = full_id.split(":", 1)
+        else:
+            ns, short = self._default_ns.rstrip(":"), full_id
+
+        ns = ns.rstrip(":")
+
+        if ns == "minecraft":
+            modid = "minecraft:"
+            modid_safe = ""
+        else:
+            modid = f"{ns}:"
+            modid_safe = f"{ns}_"
+
+        return {
+            "material_id": short,
+            "modid": modid,
+            "modid_safe": modid_safe,
+            "material_zh_cn": zh,
+        }
 
     def post_processor(self) -> Optional[PostProcessor]:
         global_repl = dict(self._replacements)

@@ -1,0 +1,285 @@
+{
+  "plugins": [
+    {
+      "type": "localizer",
+      "template": "templates/localization/{modid}{material_id}.json",
+      "output_name": "{modid}{material_id}.json",
+      "default_namespace": "minecraft",
+      "materials": {
+        "minecraft:acacia": "金合欢",
+        "minecraft:bamboo": "竹",
+        "minecraft:birch": "白桦",
+        "minecraft:cherry": "樱花",
+        "minecraft:crimson": "绯红",
+        "minecraft:dark_oak": "深色橡木",
+        "minecraft:jungle": "丛林",
+        "minecraft:mangrove": "红树",
+        "minecraft:oak": "橡木",
+        "minecraft:pale_oak": "苍白橡木",
+        "minecraft:spruce": "云杉",
+        "minecraft:warped": "诡异",
+        "bigglobe:charred": "焦木",
+        "biomesoplenty:cypress": "柏木",
+        "biomesoplenty:fir": "冷杉",
+        "biomesoplenty:pine": "松木",
+        "biomesoplenty:maple": "枫木",
+        "biomesoplenty:redwood": "红杉",
+        "biomesoplenty:mahogany": "桃花心",
+        "biomesoplenty:jacaranda": "蓝花楹",
+        "biomesoplenty:palm": "棕榈",
+        "biomesoplenty:willow": "柳木",
+        "biomesoplenty:dead": "垂死木",
+        "biomesoplenty:magic": "魔法木",
+        "biomesoplenty:umbran": "暗影木",
+        "biomesoplenty:hellbark": "地狱皮木",
+        "biomesoplenty:empyreal": "苍穹木",
+        "deeperdarker:echo": "回响",
+        "deeperdarker:bloom": "繁花",
+        "minecells:putrid": "腐烂",
+        "luphieclutteredmod:luphie_glow": "荧光木",
+        "luphieclutteredmod:luphie_green": "绿木",
+        "luphieclutteredmod:luphie_blue_mushroom": "蓝色蘑菇木",
+        "luphieclutteredmod:luphie_pink": "粉红木",
+        "luphieclutteredmod:luphie_flowering_pink": "花饰粉红木",
+        "luphieclutteredmod:luphie_purple": "紫木",
+        "luphieclutteredmod:luphie_flowering_purple": "花饰紫木",
+        "luphieclutteredmod:luphie_yellow": "黄木",
+        "luphieclutteredmod:luphie_flowering_yellow": "花饰黄木",
+        "iceandfire:dead_wood": "悚木",
+        "ribbits:mossy_oak": "苔橡木",
+        "wood:light": "浅色",
+        "wood:dark": "深色",
+        "wood:pink": "粉木",
+        "andesite": "安山岩",
+        "basalt": "玄武岩",
+        "blackstone": "黑石",
+        "calcite": "方解石",
+        "deepslate": "深板岩",
+        "diorite": "闪长岩",
+        "granite": "花岗岩",
+        "quartz": "石英",
+        "smooth_stone": "平滑石",
+        "stone": "石",
+        "deeperdarker:sculk_stone": "幽匿石",
+        "deeperdarker:gloomslate": " 幽暗板岩",
+        "minecells:septite": "塞普泰特石",
+        "minecells:ancient_septite": "古塞普泰特石",
+        "ultramarine:weathered_stone": "风化石"
+      },
+      "replacements": {},
+      "per_material_replacements": {
+        "acacia": {
+          "木木": "木"
+        },
+        "bamboo": {
+          "木木": "木",
+          "_log": "_block",
+          "_boat": "_raft",
+          "原木": "块",
+          "船": "筏"
+        },
+        "birch": {
+          "木木": "木"
+        },
+        "cherry": {
+          "木木": "木"
+        },
+        "crimson": {
+          "木木": "木",
+          "_log": "_stem",
+          "_wood": "_hyphae",
+          "树苗": "菌",
+          "原木": "菌柄"
+        },
+        "dark_oak": {
+          "木木": "木"
+        },
+        "jungle": {
+          "木木": "木"
+        },
+        "mangrove": {
+          "木木": "木",
+          "树苗": "胎生苗"
+        },
+        "oak": {
+          "木木": "木"
+        },
+        "pale_oak": {
+          "木木": "木"
+        },
+        "spruce": {
+          "木木": "木"
+        },
+        "warped": {
+          "木木": "木",
+          "_log": "_stem",
+          "_wood": "_hyphae",
+          "树苗": "菌",
+          "原木": "菌柄"
+        },
+        "charred": {
+          "木木": "木"
+        },
+        "cypress": {
+          "木木": "木"
+        },
+        "fir": {
+          "木木": "木"
+        },
+        "pine": {
+          "木木": "木"
+        },
+        "maple": {
+          "木木": "木"
+        },
+        "redwood": {
+          "木木": "木"
+        },
+        "mahogany": {
+          "木木": "木"
+        },
+        "jacaranda": {
+          "木木": "木"
+        },
+        "palm": {
+          "木木": "木"
+        },
+        "willow": {
+          "木木": "木"
+        },
+        "dead": {
+          "木木": "木"
+        },
+        "magic": {
+          "木木": "木"
+        },
+        "umbran": {
+          "木木": "木"
+        },
+        "hellbark": {
+          "木木": "木"
+        },
+        "empyreal": {
+          "木木": "木"
+        },
+        "echo": {
+          "木木": "木"
+        },
+        "bloom": {
+          "木木": "木",
+          "_log": "_stem",
+          "原木": "茎"
+        },
+        "putrid": {
+          "木木": "木"
+        },
+        "luphie_glow": {
+          "木木": "木"
+        },
+        "luphie_green": {
+          "木木": "木"
+        },
+        "luphie_blue_mushroom": {
+          "木木": "木",
+          "_blue_mushroom_door": "_glowshroom_door"
+        },
+        "luphie_pink": {
+          "木木": "木",
+          "_door": "_heart_door"
+        },
+        "luphie_flowering_pink": {
+          "木木": "木",
+          "_door": "_heart_door",
+          "stripped_luphie_flowering_pink_log": "stripped_luphie_flowering_pinklog"
+        },
+        "luphie_purple": {
+          "木木": "木"
+        },
+        "luphie_flowering_purple": {
+          "木木": "木"
+        },
+        "luphie_yellow": {
+          "木木": "木"
+        },
+        "luphie_flowering_yellow": {
+          "木木": "木"
+        },
+        "dead_wood": {
+          "木木": "木"
+        },
+        "mossy_oak": {
+          "木木": "木"
+        },
+        "light": {
+          "木木": "木"
+        },
+        "dark": {
+          "木木": "木"
+        },
+        "pink": {
+          "木木": "木"
+        },
+        "andesite": {
+          "木": "",
+          "原木": ""
+        },
+        "basalt": {
+          "木": "",
+          "原木": ""
+        },
+        "blackstone": {
+          "木": "",
+          "原木": ""
+        },
+        "calcite": {
+          "木": "",
+          "原木": ""
+        },
+        "deepslate": {
+          "木": "",
+          "原木": ""
+        },
+        "diorite": {
+          "木": "",
+          "原木": ""
+        },
+        "granite": {
+          "木": "",
+          "原木": ""
+        },
+        "quartz": {
+          "木": "",
+          "原木": ""
+        },
+        "smooth_stone": {
+          "木": "",
+          "原木": ""
+        },
+        "stone": {
+          "木": "",
+          "原木": ""
+        },
+        "sculk_stone": {
+          "木": "",
+          "原木": ""
+        },
+        "gloomslate": {
+          "木": "",
+          "原木": ""
+        },
+        "septite": {
+          "木": "",
+          "原木": ""
+        },
+        "ancient_septite": {
+          "木": "",
+          "原木": ""
+        },
+        "weathered_stone": {
+          "木": "",
+          "原木": ""
+        }
+      }
+    }
+  ]
+}
