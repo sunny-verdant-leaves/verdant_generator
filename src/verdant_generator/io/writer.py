@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Tuple
 
-from src.render_engine import OutputFile
+from verdant_generator.render_engine import OutputFile
 
 
 @dataclass

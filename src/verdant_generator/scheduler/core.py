@@ -4,8 +4,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Tuple
 
-from src.config import load_config
-from src.io import WriteReport, write_outputs
+from verdant_generator.config import load_config
+from verdant_generator.io import WriteReport, write_outputs
 
 
 @dataclass

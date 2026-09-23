@@ -4,7 +4,7 @@ trees 可以是完整 ID（"minecraft:oak"）或短名（"oak"）。
 """
 from typing import Callable, List, Optional
 
-from src.render_engine import (
+from verdant_generator.render_engine import (
     Combination, Packer, Plugin, pack_per_combination,
 )
 

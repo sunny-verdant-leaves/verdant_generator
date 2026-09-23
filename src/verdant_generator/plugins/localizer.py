@@ -9,7 +9,7 @@
 from pathlib import Path
 from typing import Dict, Optional
 
-from src.render_engine import (
+from verdant_generator.render_engine import (
     Combination, OutputFile, Packer, Plugin, PostProcessor,
     pack_per_combination,
 )

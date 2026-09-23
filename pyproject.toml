@@ -1,10 +1,24 @@
 [project]
-name = "recipe_generator2"
-version = "2.2.0"
-requires-python = ">=3.7"
-dependencies = ["pydantic"]
+name = "verdant-generator"
+version = "3.0.0"
+description = "A batch generator for Minecraft mod development: templates in, files out."
+requires-python = ">=3.8"
+dependencies = []
 
 [project.optional-dependencies]
-tui = ["textual"]
 gui = ["flet>=0.21.0"]
-dev = ["pytest", "black", "ruff"]
+dev = ["pytest"]
+
+[project.urls]
+Homepage = "https://github.com/Linlinange/recipes_generator2"
+"Original project" = "https://github.com/Linlinange/recipes_generator2"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

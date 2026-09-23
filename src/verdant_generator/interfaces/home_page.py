@@ -2,7 +2,7 @@
 import flet as ft
 from pathlib import Path
 
-from src.config import load_config
+from verdant_generator.config import load_config
 
 
 class HomePage:

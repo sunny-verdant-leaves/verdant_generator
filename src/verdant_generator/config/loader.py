@@ -3,8 +3,8 @@ import json
 from pathlib import Path
 from typing import List
 
-from src.render_engine import Plugin
-from src.plugins import LocalizerPlugin, RecipeGeneratorPlugin
+from verdant_generator.render_engine import Plugin
+from verdant_generator.plugins import LocalizerPlugin, RecipeGeneratorPlugin
 
 
 def _make_recipe_generator(data: dict) -> RecipeGeneratorPlugin:

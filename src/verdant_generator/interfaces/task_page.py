@@ -6,7 +6,7 @@ from pathlib import Path
 
 import flet as ft
 
-from src.io import write_outputs
+from verdant_generator.io import write_outputs
 
 
 class TaskPage:
