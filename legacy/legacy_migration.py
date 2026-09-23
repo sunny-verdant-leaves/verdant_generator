@@ -1,7 +1,7 @@
 """旧配置迁移脚本。
 
 用法：
-    python examples/legacy_migration.py <旧配置.json> [输出.json]
+    python <legacy_migration.py路径> <旧配置.json> [输出.json]
 
 自动识别 type：
     "material_id" → localizer 插件（需要 material_zh_cn）

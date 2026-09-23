@@ -4,7 +4,6 @@ from pathlib import Path
 
 def main():
     print("🚀 启动本地化生成功能测试...\n")
-    print("🚀 启动本地化生成功能测试...\n")
     
     # ✅ 使用相对于工作目录的路径
     config_path = "test_manual/config.json"  # 相对于项目根目录
