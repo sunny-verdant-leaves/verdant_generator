@@ -1,0 +1,32 @@
+{
+  "plugins": [
+    {
+      "type": "recipe_generator",
+      "template": "examples/_demo_workdir/templates/{tree}_recipe.json",
+      "trees": [
+        "minecraft:oak",
+        "minecraft:crimson",
+        "minecraft:warped",
+        "biomesoplenty:fir"
+      ]
+    },
+    {
+      "type": "localizer",
+      "template": "examples/_demo_workdir/templates/{material_id}_localization.json",
+      "materials": {
+        "minecraft:oak": "橡木",
+        "minecraft:crimson": "绯红",
+        "minecraft:warped": "诡异",
+        "biomesoplenty:fir": "冷杉"
+      },
+      "per_material_replacements": {
+        "minecraft:crimson": {
+          "_log": "_stem"
+        },
+        "minecraft:warped": {
+          "_log": "_stem"
+        }
+      }
+    }
+  ]
+}

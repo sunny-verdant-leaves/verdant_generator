@@ -1,19 +1,23 @@
-"""核心引擎：数据 + 组合 + 渲染 + 输出 + 管线。"""
-import itertools
+"""核心引擎：数据 + 渲染 + 输出。
+
+已砍掉：
+    - Variable 类（变量由插件自己管理）
+    - Strategy 类（packer 由插件直接提供）
+    - cartesian() 函数（组合由插件自己生成）
+    - run() 函数（管线并入 Plugin.run）
+"""
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable, Dict, List, Optional, Tuple
+from typing import Callable, Dict, List, Tuple
 
 
 Combination = Dict[str, str]
 PostProcessor = Callable[[str, Combination], str]
 Packer = Callable[[str, List[Tuple[Combination, str]]], List["OutputFile"]]
-Filter = Callable[[Combination], bool]
 
 
-# Windows 文件名非法字符：< > : " | ? *
-# 同时排除控制字符
+# Windows 文件名非法字符
 _ILLEGAL_CHARS = re.compile(r'[<>:"|?*\x00-\x1f]')
 
 
@@ -22,18 +26,11 @@ def safe_filename(name: str) -> str:
 
     - 替换 Windows 保留字符为下划线
     - 保留 / （表示子目录）
-    - 去掉每段末尾的空格和点（Windows 不允许）
+    - 去掉每段末尾的空格和点
     """
     result = _ILLEGAL_CHARS.sub("_", name)
-    parts = result.split("/")
-    parts = [p.rstrip(" .") for p in parts]
+    parts = [p.rstrip(" .") for p in result.split("/")]
     return "/".join(parts)
-
-
-@dataclass(frozen=True)
-class Variable:
-    name: str
-    values: List[str]
 
 
 @dataclass
@@ -51,31 +48,6 @@ class Template:
 class OutputFile:
     filename: str
     content: str
-
-
-@dataclass
-class Strategy:
-    """一个生成策略：用哪些变量 + 怎么组合 + 怎么输出。"""
-    variables: List[str]
-    packer: Packer
-    filters: List[Filter] = field(default_factory=list)
-
-
-# ---------- 组合 ----------
-def cartesian(
-    variables: List[Variable],
-    filters: Optional[List[Filter]] = None,
-) -> List[Combination]:
-    if not variables:
-        combos: List[Combination] = [{}]
-    else:
-        names = [v.name for v in variables]
-        value_lists = [v.values for v in variables]
-        combos = [dict(zip(names, vs)) for vs in itertools.product(*value_lists)]
-
-    if filters:
-        combos = [c for c in combos if all(f(c) for f in filters)]
-    return combos
 
 
 # ---------- 渲染 ----------
@@ -100,7 +72,7 @@ def render(text: str, combo: Combination, strict: bool = False) -> str:
 
 # ---------- 输出策略 ----------
 def pack_per_combination(template_name, results):
-    """每个组合一个文件。文件名会经过 safe_filename 处理。"""
+    """每个组合一个文件。"""
     return [
         OutputFile(safe_filename(render(template_name, c)), t)
         for c, t in results
@@ -113,7 +85,7 @@ def pack_merged(filename, results, joiner="\n"):
 
 
 def pack_grouped(group_by, name_template, results, joiner="\n"):
-    """按某个变量分组，每组一个文件。文件名会经过 safe_filename 处理。"""
+    """按某个变量分组，每组一个文件。"""
     groups: Dict[str, Tuple[Combination, List[str]]] = {}
     for combo, text in results:
         key = combo.get(group_by, "_default")
@@ -122,24 +94,3 @@ def pack_grouped(group_by, name_template, results, joiner="\n"):
         OutputFile(safe_filename(render(name_template, combo)), joiner.join(texts))
         for combo, texts in groups.values()
     ]
-
-
-# ---------- 管线 ----------
-def run(
-    template: Template,
-    pool: Dict[str, Variable],
-    strategy: Strategy,
-    post: Optional[PostProcessor] = None,
-) -> List[OutputFile]:
-    """一任务一模板：模板 + 变量池 + 策略 → 一批 OutputFile。"""
-    variables = [pool[n] for n in strategy.variables]
-    combos = cartesian(variables, strategy.filters)
-
-    results = []
-    for combo in combos:
-        text = render(template.content, combo)
-        if post:
-            text = post(text, combo)
-        results.append((combo, text))
-
-    return strategy.packer(template.path.name, results)

@@ -1,0 +1,5 @@
+{
+    "block.pfm.{material_id}_chair": "基本{material_zh_cn}椅子",
+    "block.pfm.{material_id}_table": "{material_zh_cn}桌子",
+    "block.pfm.{material_id}_log": "{material_zh_cn}原木"
+}
