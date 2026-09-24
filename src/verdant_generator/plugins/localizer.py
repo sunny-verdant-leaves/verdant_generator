@@ -2,9 +2,11 @@
 
 支持两种 materials 输入：
     - 完整 ID: {"minecraft:oak": "橡木", "biomesoplenty:fir": "冷杉"}
-      → 自动派生 material_id（短名）、modid、modid_safe
     - 短名:   {"oak": "橡木"}
-      → 用 default_namespace 补 modid
+
+完整 ID 派生：
+    {material_id}  → 短名（"oak"）
+    {modid}        → modid，不带冒号（"minecraft"）
 """
 from pathlib import Path
 from typing import Dict, Optional
@@ -58,21 +60,11 @@ class LocalizerPlugin(Plugin):
         if ":" in full_id:
             ns, short = full_id.split(":", 1)
         else:
-            ns, short = self._default_ns.rstrip(":"), full_id
-
-        ns = ns.rstrip(":")
-
-        if ns == "minecraft":
-            modid = "minecraft:"
-            modid_safe = ""
-        else:
-            modid = f"{ns}:"
-            modid_safe = f"{ns}_"
+            ns, short = self._default_ns, full_id
 
         return {
             "material_id": short,
-            "modid": modid,
-            "modid_safe": modid_safe,
+            "modid": ns.rstrip(":"),
             "material_zh_cn": zh,
         }
 

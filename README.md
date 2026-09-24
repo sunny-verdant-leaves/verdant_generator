@@ -89,7 +89,9 @@ Notes:
 
 - `template` points to the template file on disk.
 - `output_name` is the output filename template (may contain placeholders).
-- Full IDs like `minecraft:oak` automatically derive `{material_id}`, `{modid}`, `{modid_safe}`.
+- Full IDs like `minecraft:oak` automatically derive:
+  - `{material_id}` / `{tree}` → short name (`oak`)
+  - `{modid}` → mod id without colon (`minecraft`)
 - `per_material_replacements` applies only to the specified material.
 
 ## Architecture

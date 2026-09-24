@@ -1,7 +1,17 @@
 """配方生成插件。
 
 trees 可以是完整 ID（"minecraft:oak"）或短名（"oak"）。
+
+完整 ID 会自动派生：
+    {tree}   → 短名（"oak"）
+    {modid}  → modid，不带冒号（"minecraft"）
+
+模板示例：
+    "{modid}:{tree}_planks"    → "minecraft:oak_planks"
+    "{tree}.json"              → "oak.json"
+    "{modid}_{tree}.json"      → "biomesoplenty_fir.json"
 """
+from pathlib import Path
 from typing import Callable, List, Optional
 
 from verdant_generator.render_engine import (
@@ -40,7 +50,6 @@ class RecipeGeneratorPlugin(Plugin):
     def output_name_template(self) -> str:
         if self._output_name_template:
             return self._output_name_template
-        from pathlib import Path
         return Path(self._template_path).name
 
     def replacements(self):
@@ -55,17 +64,9 @@ class RecipeGeneratorPlugin(Plugin):
         else:
             ns, short = self._default_ns, full_id
 
-        if ns == "minecraft":
-            modid = "minecraft:"
-            modid_safe = ""
-        else:
-            modid = f"{ns}:"
-            modid_safe = f"{ns}_"
-
         return {
             "tree": short,
-            "modid": modid,
-            "modid_safe": modid_safe,
+            "modid": ns.rstrip(":"),
         }
 
     def packer(self) -> Packer:

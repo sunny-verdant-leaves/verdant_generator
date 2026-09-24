@@ -89,7 +89,9 @@ python -m pytest tests/ -v
 
 - `template` 是磁盘上的模板文件路径。
 - `output_name` 是输出文件名模板，可以带占位符。
-- 完整 ID（如 `minecraft:oak`）会自动派生 `{material_id}`（短名）、`{modid}`（带冒号）、`{modid_safe}`（下划线形式）。
+- 完整 ID（如 `minecraft:oak`）会自动派生：
+  - `{material_id}` / `{tree}` → 短名（`oak`）
+  - `{modid}` → mod id，不带冒号（`minecraft`）
 - `per_material_replacements` 只对指定材质生效。
 
 ## 架构

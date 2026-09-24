@@ -2,21 +2,21 @@
   "plugins": [
     {
       "type": "recipe_generator",
-      "template": "templates/material.json",
+      "template": "templates/recipes/material.json",
       "output_name": "material.json",
       "default_namespace": "minecraft",
       "trees": []
     },
     {
       "type": "recipe_generator",
-      "template": "templates/{modid}{tree}_door.json",
-      "output_name": "{modid}{tree}_door.json",
+      "template": "templates/recipes/{modid}_{tree}_door.json",
+      "output_name": "{modid}_{tree}_door.json",
       "default_namespace": "minecraft",
       "trees": []
     },
     {
       "type": "recipe_generator",
-      "template": "templates/{tree}.json",
+      "template": "templates/recipes/{tree}.json",
       "output_name": "{tree}.json",
       "default_namespace": "minecraft",
       "trees": []

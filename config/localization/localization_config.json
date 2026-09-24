@@ -2,8 +2,8 @@
   "plugins": [
     {
       "type": "localizer",
-      "template": "templates/localization/{modid}{material_id}.json",
-      "output_name": "{modid}{material_id}.json",
+      "template": "templates/localization/{modid}_{material_id}.json",
+      "output_name": "{modid}_{material_id}.json",
       "default_namespace": "minecraft",
       "materials": {
         "minecraft:acacia": "金合欢",
