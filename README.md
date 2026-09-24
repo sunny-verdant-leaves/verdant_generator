@@ -94,6 +94,51 @@ Notes:
 
 ## Architecture
 
+```mermaid
+graph LR
+    subgraph UI["interfaces/"]
+        Home[home_page]
+        Task[task_page]
+        Settings[settings_page]
+    end
+
+    subgraph Data["config/ + io/"]
+        Loader[loader.py]
+        Writer[writer.py]
+    end
+
+    subgraph Engine["render_engine/"]
+        Core["core.py<br/>render / safe_filename / pack_*"]
+        Base["plugin.py<br/>Plugin BaseClass"]
+    end
+
+    subgraph Plugins["plugins/"]
+        Recipe[recipe_generator]
+        Loc[localizer]
+    end
+
+    Config[("config.json")] --> Loader
+    Loader --> Recipe
+    Loader --> Loc
+
+    Home --> Loader
+    Task --> Recipe
+    Task --> Loc
+    Settings --> Config
+
+    Recipe --> Base
+    Loc --> Base
+    Base --> Core
+
+    Task --> Writer
+    Writer --> Disk[("OutputFile")]
+
+    style UI fill:#dad
+    style Data fill:#afa
+    style Engine fill:#fcc
+    style Plugins fill:#ffa
+```
+
 ```
 src/
 └── verdant_generator/
